@@ -14,7 +14,11 @@ import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.neumob.api.Neumob;
 import com.parse.http.ParseNetworkInterceptor;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -51,7 +55,7 @@ public class Parse {
       private Context context;
       private String applicationId;
       private String clientKey;
-      private String server = "https://api.parse.com/1/";
+      private String server = "https://parseapi.back4app.com/";
       private boolean localDataStoreEnabled;
       private List<ParseNetworkInterceptor> interceptors;
 
@@ -382,6 +386,19 @@ public class Parse {
     // isLocalDataStoreEnabled() to perform additional behavior.
     isLocalDatastoreEnabled = configuration.localDataStoreEnabled;
 
+    Context applicationContext = configuration.context.getApplicationContext();
+
+    try {
+      JSONObject initConfig = new JSONObject();
+      JSONObject partnerConfig = new JSONObject();
+      partnerConfig.put("appid", configuration.applicationId);
+      partnerConfig.put("clientkey", configuration.clientKey);
+      partnerConfig.put("PARTNER_CODE", "back4app");
+      initConfig.put("Partner", partnerConfig);
+      // Here, Neumob will have a key linking this app to back4app
+      Neumob.initialize(applicationContext, configuration.clientKey, initConfig); // API will be available in Android 2.5.2
+    } catch (JSONException e) {}
+
     ParsePlugins.Android.initialize(configuration.context, configuration.applicationId, configuration.clientKey);
 
     try {
@@ -389,8 +406,6 @@ public class Parse {
     } catch (MalformedURLException ex) {
       throw new RuntimeException(ex);
     }
-
-    Context applicationContext = configuration.context.getApplicationContext();
 
     ParseHttpClient.setKeepAlive(true);
     ParseHttpClient.setMaxConnections(20);
