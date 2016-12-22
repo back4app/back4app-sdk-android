@@ -14,7 +14,11 @@ import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.neumob.api.Neumob;
 import com.parse.http.ParseNetworkInterceptor;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,6 +39,7 @@ import bolts.Task;
  * library.
  */
 public class Parse {
+
   private static final String PARSE_APPLICATION_ID = "com.parse.APPLICATION_ID";
   private static final String PARSE_CLIENT_KEY = "com.parse.CLIENT_KEY";
 
@@ -188,6 +193,17 @@ public class Parse {
    *          The client key provided in the Parse dashboard.
    */
   public static void initialize(Context context, String applicationId, String clientKey) {
+    try {
+      JSONObject initConfig = new JSONObject();
+      JSONObject partnerConfig = new JSONObject();
+      partnerConfig.put("appid", applicationId);
+      partnerConfig.put("clientkey", clientKey);
+      partnerConfig.put("PARTNER_CODE", "back4app");
+      initConfig.put("Partner", partnerConfig);
+      // Here, Neumob will have a key linking this app to back4app
+      Neumob.initialize(context.getApplicationContext(), clientKey, initConfig); // API will be available in Android 2.5.2
+    } catch (JSONException e) {}
+
     ParsePlugins.Android.initialize(context, applicationId, clientKey);
     Context applicationContext = context.getApplicationContext();
 

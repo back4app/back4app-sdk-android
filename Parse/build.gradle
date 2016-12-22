@@ -8,7 +8,7 @@ version = VERSION_NAME
 
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
 
     dependencies {
@@ -43,6 +43,8 @@ dependencies {
 
     provided 'com.squareup.okhttp:okhttp:2.4.0'
     provided 'com.facebook.stetho:stetho:1.1.1'
+
+    provided 'com.neumob:neumob-android:+'
 
     testCompile 'org.robolectric:robolectric:3.0'
     testCompile 'org.skyscreamer:jsonassert:1.2.3'

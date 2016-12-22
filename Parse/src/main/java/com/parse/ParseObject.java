@@ -50,7 +50,7 @@ import bolts.Task;
  * existing data to retrieve.
  */
 public class ParseObject {
-  /* package */ static String server = "https://api.parse.com";
+  /* package */ static String server = "https://parseapi.back4app.com/";
   private static final String AUTO_CLASS_NAME = "_Automatic";
   /* package */ static final String VERSION_NAME = "1.10.3";
 
